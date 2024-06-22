@@ -14,7 +14,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.event.MouseInputListener;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
@@ -27,6 +30,7 @@ import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.WaypointPainter;
+import route.swing.component.Autocompletado;
 import route.swing.http.HttpClient;
 import route.swing.http.HttpClientLlamaApi;
 import route.swing.model.HistoryRegion;
@@ -65,7 +69,7 @@ public class MainPanel extends javax.swing.JFrame {
     private UserVerificationResponseDto user;
 
     public MainPanel(UserVerificationResponseDto user) throws UnsupportedEncodingException, UnknownHostException {
-        setUndecorated(true);
+//        setUndecorated(true);
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null);
@@ -86,6 +90,7 @@ public class MainPanel extends javax.swing.JFrame {
         setForm(new MenuPanel(user));
         jXMapViewer.setBackground(Color.white);
         setupMap();
+
     }
 
     /**
@@ -98,6 +103,7 @@ public class MainPanel extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jTextField1 = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -128,6 +134,10 @@ public class MainPanel extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jTextField1.setBackground(new java.awt.Color(255, 255, 255));
+        jTextField1.setBorder(null);
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 80, -1, -1));
+
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -150,7 +160,7 @@ public class MainPanel extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("Bienvenido");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 300, 50));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 180, 50));
 
         InicioField.setBackground(new java.awt.Color(255, 255, 255));
         InicioField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -163,6 +173,11 @@ public class MainPanel extends javax.swing.JFrame {
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 InicioFieldFocusLost(evt);
+            }
+        });
+        InicioField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                InicioFieldMousePressed(evt);
             }
         });
         jPanel1.add(InicioField, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 290, 50));
@@ -178,6 +193,11 @@ public class MainPanel extends javax.swing.JFrame {
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 DestinoFieldFocusLost(evt);
+            }
+        });
+        DestinoField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                DestinoFieldMousePressed(evt);
             }
         });
         jPanel1.add(DestinoField, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 290, 50));
@@ -244,34 +264,34 @@ public class MainPanel extends javax.swing.JFrame {
         RouteDistanceLabel.setForeground(new java.awt.Color(0, 0, 0));
         jPanel1.add(RouteDistanceLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 560, 130, 20));
 
+        RouteTimeLabel.setText("Time");
         RouteTimeLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         RouteTimeLabel.setForeground(new java.awt.Color(0, 0, 0));
-        RouteTimeLabel.setText("Time");
         jPanel1.add(RouteTimeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 560, 130, 20));
 
+        jLabel6.setText("Tiempo Estimado");
         jLabel6.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel6.setText("Tiempo Estimado");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 530, -1, -1));
 
+        jLabel7.setText("Clima");
         jLabel7.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel7.setText("Clima");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 610, -1, -1));
 
+        RouteWheaterLabel.setText("Wheater");
         RouteWheaterLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         RouteWheaterLabel.setForeground(new java.awt.Color(0, 0, 0));
-        RouteWheaterLabel.setText("Wheater");
         jPanel1.add(RouteWheaterLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 640, 130, 20));
 
+        jLabel9.setText("Transporte");
         jLabel9.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel9.setText("Transporte");
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 610, -1, -1));
 
+        RouteTimeLabel1.setText("C, A, B");
         RouteTimeLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         RouteTimeLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        RouteTimeLabel1.setText("C, A, B");
         jPanel1.add(RouteTimeLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 640, 130, 20));
 
         jLabel10.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -334,6 +354,7 @@ public class MainPanel extends javax.swing.JFrame {
             InicioField.setText("");
             InicioField.setForeground(Color.black);
         }
+
     }//GEN-LAST:event_InicioFieldFocusGained
 
     private void InicioFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_InicioFieldFocusLost
@@ -360,21 +381,79 @@ public class MainPanel extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_DestinoFieldFocusLost
 
+
     private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
+
+        if (this.startResponse == null && this.endResponse == null) {
+            return;
+        }
+        SaveAndGrapicRoute();
+    }//GEN-LAST:event_jLabel4MousePressed
+
+    private void InicioFieldMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_InicioFieldMousePressed
+        // TODO add your handling code here:
+
+        if (InicioField.getText().equals("Inicio")) {
+            Suggestions suggestions = new Suggestions(this);
+            suggestions.setStatus(false);
+            suggestions.setVisible(true);
+            
+        }
+
+    }//GEN-LAST:event_InicioFieldMousePressed
+
+    private void DestinoFieldMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DestinoFieldMousePressed
+        // TODO add your handling code here:
+        if (DestinoField.getText().equals("Destino")) {
+            Suggestions suggestions = new Suggestions(this);
+            suggestions.setStatus(true);
+            suggestions.setVisible(true);
+        }
+
+    }//GEN-LAST:event_DestinoFieldMousePressed
+
+    HistoryRegion startResponse;
+    HistoryRegion endResponse;
+
+    public void SaveStartRegion(String name, String oms_id, String oms_type) throws IOException {
+        this.startResponse = jsonUtil.fromJson(client.post("/api/user/region", jsonUtil.toJson(mapApi.getCoordinatesByOsmId(name, oms_id, oms_type))), HistoryRegion.class);
+
+        if (this.startResponse != null) {
+            InicioField.setForeground(Color.black);
+            InicioField.setText(name);
+        } else {
+            System.out.println("error");
+        }
+    }
+
+    public void SaveEndRegion(String name, String oms_id, String oms_type) throws IOException {
+        this.endResponse = jsonUtil.fromJson(client.post("/api/user/region", jsonUtil.toJson(mapApi.getCoordinatesByOsmId(name, oms_id, oms_type))), HistoryRegion.class);
+        if (this.endResponse != null) {
+            DestinoField.setForeground(Color.black);
+            DestinoField.setText(name);
+        }
+    }
+
+    public String getStartRegion() {
+        return InicioField.getText();
+    }
+
+    public String getEndRegion() {
+        return DestinoField.getText();
+    }
+
+    public void SaveAndGrapicRoute() {
 
         try {
 
-            HistoryRegion startResponse = jsonUtil.fromJson(client.post("/api/user/region", jsonUtil.toJson(mapApi.findRegionByName(InicioField.getText()))), HistoryRegion.class);
-            HistoryRegion endResponse = jsonUtil.fromJson(client.post("/api/user/region", jsonUtil.toJson(mapApi.findRegionByName(DestinoField.getText()))), HistoryRegion.class);
-
             HistoryRoute routeC = null;
-            if (startResponse == null && endResponse == null) {
+            if (this.startResponse == null && this.endResponse == null) {
                 return;
             }
 
             routeC = new HistoryRoute(
-                    startResponse,
-                    endResponse
+                    this.startResponse,
+                    this.endResponse
             );
 
             Route route = toRoute(jsonUtil.fromJson(client.post("/api/user/" + user.getId() + "/route", jsonUtil.toJson(routeC)), HistoryRoute.class));
@@ -389,9 +468,7 @@ public class MainPanel extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
-    }//GEN-LAST:event_jLabel4MousePressed
+    }
 
     public void RouteLoadMap(Route route) throws IOException, IOException {
         graphicRouteInPanel(route);
@@ -604,6 +681,7 @@ public class MainPanel extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JTextField jTextField1;
     private route.swing.model.jxmap.JXMapViewerCustom jXMapViewer;
     // End of variables declaration//GEN-END:variables
 }

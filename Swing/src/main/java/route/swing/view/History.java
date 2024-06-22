@@ -53,6 +53,9 @@ public class History extends javax.swing.JFrame {
         
         userRoutes = jsonUtil.fromJsonToList(client.get("/api/user/" + user.getId() + "/routes"), HistoryRoute.class);
         for (HistoryRoute route : userRoutes) {
+            if (route.getName() == null) {
+              route.setName("Uname");
+            } 
             Object[] row = {route.getName(), route.getStart().getName(), route.getEnd().getName()};
             
             model.addRow(row);

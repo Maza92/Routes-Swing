@@ -224,10 +224,15 @@ public class TimeTable extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Symbols Nerd Font Mono", 0, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("");
+        jLabel1.setFont(new java.awt.Font("Symbols Nerd Font Mono", 0, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel1MousePressed(evt);
+            }
+        });
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 50, 50));
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -257,7 +262,7 @@ public class TimeTable extends javax.swing.JFrame {
                 HoraryNameFocusLost(evt);
             }
         });
-        jPanel1.add(HoraryName, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 440, 440, 30));
+        jPanel1.add(HoraryName, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 440, 440, 40));
 
         InicioField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         InicioField.setText("Inicio");
@@ -341,12 +346,10 @@ public class TimeTable extends javax.swing.JFrame {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(GuardarHorario, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(GuardarHorario, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 440, 140, 30));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 440, 140, 40));
 
         jPanel3.setBackground(new java.awt.Color(85, 110, 230));
 
@@ -386,55 +389,55 @@ public class TimeTable extends javax.swing.JFrame {
 
         jPanel1.add(jXMapViewer, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 70, 590, 360));
 
+        jLabel12.setText("Distancia Total");
         jLabel12.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel12.setText("Distancia Total");
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 490, -1, -1));
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 500, -1, -1));
 
+        RouteDistanceLabel.setText("Distance");
         RouteDistanceLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         RouteDistanceLabel.setForeground(new java.awt.Color(0, 0, 0));
-        RouteDistanceLabel.setText("Distance");
-        jPanel1.add(RouteDistanceLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 520, 130, 20));
+        jPanel1.add(RouteDistanceLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 530, 130, 20));
 
+        jLabel7.setText("Clima");
         jLabel7.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel7.setText("Clima");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 570, -1, -1));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 580, -1, -1));
 
+        RouteWheaterLabel.setText("Wheater");
         RouteWheaterLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         RouteWheaterLabel.setForeground(new java.awt.Color(0, 0, 0));
-        RouteWheaterLabel.setText("Wheater");
-        jPanel1.add(RouteWheaterLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 600, 130, 20));
+        jPanel1.add(RouteWheaterLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 610, 130, 20));
 
+        jLabel6.setText("Tiempo Estimado");
         jLabel6.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel6.setText("Tiempo Estimado");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 490, -1, -1));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 500, -1, -1));
 
+        RouteTimeLabel.setText("Time");
         RouteTimeLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         RouteTimeLabel.setForeground(new java.awt.Color(0, 0, 0));
-        RouteTimeLabel.setText("Time");
-        jPanel1.add(RouteTimeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 520, 130, 20));
+        jPanel1.add(RouteTimeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 530, 130, 20));
 
+        jLabel9.setText("Transporte");
         jLabel9.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel9.setText("Transporte");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 570, -1, -1));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 580, -1, -1));
 
+        transporte.setText("Transport");
         transporte.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         transporte.setForeground(new java.awt.Color(0, 0, 0));
-        transporte.setText("Transport");
-        jPanel1.add(transporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 600, 130, 20));
+        jPanel1.add(transporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 610, 130, 20));
 
+        jLabel8.setText("Paradas");
         jLabel8.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel8.setText("Paradas");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 490, -1, -1));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 500, -1, -1));
 
+        paradas.setText("P");
         paradas.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         paradas.setForeground(new java.awt.Color(0, 0, 0));
-        paradas.setText("P");
-        jPanel1.add(paradas, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 520, 130, 20));
+        jPanel1.add(paradas, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 530, 130, 20));
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -520,8 +523,8 @@ public class TimeTable extends javax.swing.JFrame {
     private void jLabel5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MousePressed
 
         try {
-            Region start = mapApi.findRegionByName(InicioField.getText());
-            Region end = mapApi.findRegionByName(DestinoField.getText());
+            Region start = mapApi.getCoordinatesByAddress(InicioField.getText());
+            Region end = mapApi.getCoordinatesByAddress(DestinoField.getText());
 
             Route route = new Route(start, end);
 
@@ -586,6 +589,11 @@ public class TimeTable extends javax.swing.JFrame {
         unsetModel.setRowCount(0);
         TableTIme.setModel(unsetModel);
     }//GEN-LAST:event_GuardarHorarioMousePressed
+
+    private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jLabel1MousePressed
 
     public void dataSet(Route route) throws IOException {
         double distance = Haversine.round(Haversine.calculateDistance(
