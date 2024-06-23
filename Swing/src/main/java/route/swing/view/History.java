@@ -15,8 +15,12 @@ import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import route.swing.http.HttpClient;
 import route.swing.model.HistoryRoute;
 import route.swing.model.user.UserVerificationResponseDto;
@@ -33,12 +37,13 @@ public class History extends javax.swing.JFrame {
      */
     String[] header = {"Nombre", "Inicio", "Destino"};
     DefaultTableModel model;
-    
+
     List<HistoryRoute> userRoutes;
     UserVerificationResponseDto user;
-    
+
     HttpClient client;
     JsonUtil jsonUtil;
+
     public History(UserVerificationResponseDto user) throws IOException {
         setUndecorated(true);
         initComponents();
@@ -46,23 +51,54 @@ public class History extends javax.swing.JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         model = new DefaultTableModel(header, 0);
-        
-        
+
         client = new HttpClient();
         jsonUtil = new JsonUtil();
-        
+
         userRoutes = jsonUtil.fromJsonToList(client.get("/api/user/" + user.getId() + "/routes"), HistoryRoute.class);
         for (HistoryRoute route : userRoutes) {
             if (route.getName() == null) {
-              route.setName("Uname");
-            } 
+                route.setName("Uname");
+            }
             Object[] row = {route.getName(), route.getStart().getName(), route.getEnd().getName()};
-            
+
             model.addRow(row);
         }
-        
+
         Table.setModel(model);
+        rowSorter = new TableRowSorter<>(model);
+        Table.setRowSorter(rowSorter);
+
+        InicioField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                filterTable();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                filterTable();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                filterTable();
+            }
+
+            private void filterTable() {
+                String text = InicioField.getText();
+                if (text.trim().length() == 0) {
+                    rowSorter.setRowFilter(null);
+                } else {
+                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 1));  // Filtra en la columna "Inicio"
+                }
+            }
+
+        });
     }
+
+    private DefaultTableModel tableModel;
+    private TableRowSorter<DefaultTableModel> rowSorter;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -240,7 +276,6 @@ public class History extends javax.swing.JFrame {
         // Eliminar bordes del encabezado y las celdas
         Table.setShowGrid(false);
         Table.setIntercellSpacing(new Dimension(0, 0));
-        
 
         // Renderizador de celdas personalizado
         DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer() {

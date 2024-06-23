@@ -4,6 +4,7 @@
  */
 package route.swing.view;
 
+import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -89,10 +90,10 @@ public class Suggestions extends javax.swing.JFrame {
             }
         });
 
-        jButton1.addMouseListener(new MouseAdapter() {
+        jLabel1.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                jButton1MousePressed(evt);
+                jLabel1MousePressed(evt);
             }
         });
 
@@ -183,19 +184,94 @@ public class Suggestions extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        returnLAbel = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         SuggestionsField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        returnLAbel.setFont(new java.awt.Font("Symbols Nerd Font Mono", 0, 18)); // NOI18N
+        returnLAbel.setForeground(new java.awt.Color(0, 0, 0));
+        returnLAbel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        returnLAbel.setText("");
+        returnLAbel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                returnLAbelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                returnLAbelMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                returnLAbelMousePressed(evt);
+            }
+        });
+        jPanel1.add(returnLAbel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 30, 50));
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+
+        jLabel3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel3.setText("Selección de zona");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(165, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 370, 50));
+
+        jPanel2.setBackground(new java.awt.Color(85, 110, 230));
+
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Seleccionar");
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel1MousePressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 60, 100, 50));
+
         SuggestionsField.setBackground(new java.awt.Color(255, 255, 255));
         SuggestionsField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        SuggestionsField.setForeground(new java.awt.Color(204, 204, 204));
+        SuggestionsField.setForeground(new java.awt.Color(0, 0, 0));
         SuggestionsField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
         SuggestionsField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -210,29 +286,26 @@ public class Suggestions extends javax.swing.JFrame {
                 SuggestionsFieldActionPerformed(evt);
             }
         });
-        jPanel1.add(SuggestionsField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 260, 50));
+        jPanel1.add(SuggestionsField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 240, 50));
 
+        jList1.setBackground(new java.awt.Color(255, 255, 255));
+        jList1.setBorder(null);
+        jList1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jList1.setForeground(new java.awt.Color(0, 0, 0));
+        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jList1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 350, 240));
-
-        jButton1.setText("jButton1");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jButton1MousePressed(evt);
-            }
-        });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 10, -1, 50));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 350, 240));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
         );
 
         pack();
@@ -258,7 +331,8 @@ public class Suggestions extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_SuggestionsFieldActionPerformed
 
-    private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
+    private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
+        // TODO add your handling code here:
         try {
             // TODO add your handling code here:
 
@@ -267,8 +341,22 @@ public class Suggestions extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Suggestions.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }//GEN-LAST:event_jLabel1MousePressed
 
-    }//GEN-LAST:event_jButton1MousePressed
+    private void returnLAbelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_returnLAbelMouseEntered
+        // TODO add your handling code here:
+        returnLAbel.setForeground(Color.red);
+    }//GEN-LAST:event_returnLAbelMouseEntered
+
+    private void returnLAbelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_returnLAbelMouseExited
+        // TODO add your handling code here:
+        returnLAbel.setForeground(Color.black);
+    }//GEN-LAST:event_returnLAbelMouseExited
+
+    private void returnLAbelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_returnLAbelMousePressed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_returnLAbelMousePressed
 
     /**
      * @param args the command line arguments
@@ -313,9 +401,13 @@ public class Suggestions extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField SuggestionsField;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel returnLAbel;
     // End of variables declaration//GEN-END:variables
 }
