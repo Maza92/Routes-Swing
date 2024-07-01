@@ -4,6 +4,7 @@
  */
 package route.swing.view;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -12,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import route.swing.http.HttpClient;
 import route.swing.model.user.UserCredentialDto;
 import route.swing.model.user.UserVerificationResponseDto;
@@ -316,6 +318,13 @@ public class Login extends javax.swing.JFrame {
         }
         //</editor-fold>
 
+        
+        FlatLightLaf.setup();
+        UIManager.put("Button.arc", 12);
+        UIManager.put("Component.arc", 12);
+        UIManager.put("ProgressBar.arc", 12);
+        UIManager.put("TextComponent.arc", 12);
+        UIManager.put("Table.arc", 12);
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

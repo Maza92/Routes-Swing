@@ -39,13 +39,13 @@ public class Register extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
 
-        NameField.setBorder(BorderFactory.createCompoundBorder(EmailField.getBorder(),
+        NameField.setBorder(BorderFactory.createCompoundBorder(NameField.getBorder(),
                 BorderFactory.createEmptyBorder(5, 15, 5, 5)));
 
         EmailField.setBorder(BorderFactory.createCompoundBorder(EmailField.getBorder(),
                 BorderFactory.createEmptyBorder(5, 15, 5, 5)));
 
-        PasswordField.setBorder(BorderFactory.createCompoundBorder(EmailField.getBorder(),
+        PasswordField.setBorder(BorderFactory.createCompoundBorder(PasswordField.getBorder(),
                 BorderFactory.createEmptyBorder(5, 0, 5, 5)));
 
         PasswordField.setText("Password");
@@ -246,26 +246,6 @@ public class Register extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void EmailFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_EmailFieldFocusGained
-        // TODO add your handling code here:
-        if (EmailField.getText().equals("ejemplo@email.com")) {
-            EmailField.setText("");
-            EmailField.setForeground(Color.BLACK);
-        }
-    }//GEN-LAST:event_EmailFieldFocusGained
-
-    private void EmailFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_EmailFieldFocusLost
-        // TODO add your handling code here:
-        if (EmailField.getText().equals("")) {
-            EmailField.setForeground(Color.decode("#CCCCCC"));
-            EmailField.setText("ejemplo@email.com");
-        }
-    }//GEN-LAST:event_EmailFieldFocusLost
-
-    private void EmailFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmailFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_EmailFieldActionPerformed
-
     private void LoginButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginButtonMouseEntered
         // TODO add your handling code here:
         LoginButton.setForeground(Color.BLACK);
@@ -281,52 +261,9 @@ public class Register extends javax.swing.JFrame {
         SetVisibleLogin();
     }//GEN-LAST:event_LoginButtonMousePressed
 
-    private void NameFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_NameFieldFocusGained
-        // TODO add your handling code here:
-        if (NameField.getText().equals("Ingresa tu nombre")) {
-            NameField.setText("");
-            NameField.setForeground(Color.BLACK);
-        }
-    }//GEN-LAST:event_NameFieldFocusGained
-
-    private void NameFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_NameFieldFocusLost
-        // TODO add your handling code here:
-        if (NameField.getText().equals("")) {
-            NameField.setText("Ingresa tu nombre");
-            NameField.setForeground(Color.decode("#CCCCCC"));
-        }
-    }//GEN-LAST:event_NameFieldFocusLost
-
-    private void NameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NameFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_NameFieldActionPerformed
-
-    private void PasswordFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_PasswordFieldFocusGained
-        // TODO add your handling code here:
-
-        String password = String.valueOf(PasswordField.getPassword());
-
-        if (password.equals("Password")) {
-            PasswordField.setText("");
-            PasswordField.setForeground(Color.black);
-            PasswordField.setEchoChar('*');
-        }
-    }//GEN-LAST:event_PasswordFieldFocusGained
-
-    private void PasswordFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_PasswordFieldFocusLost
-        // TODO add your handling code here:
-        String password = String.valueOf(PasswordField.getPassword());
-
-        if (password.toLowerCase().equals("Password") || password.toLowerCase().equals("")) {
-            PasswordField.setText("Password");
-            PasswordField.setEchoChar((char) 0);
-            PasswordField.setForeground(Color.decode("#CCCCCC"));
-        }
-    }//GEN-LAST:event_PasswordFieldFocusLost
-
     private void RegisterButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RegisterButtonMousePressed
         // TODO add your handling code here:
-
+        
         String response = null;
 
         User newUser = new User(null,
@@ -355,6 +292,69 @@ public class Register extends javax.swing.JFrame {
         
         SetVisibleLogin();
     }//GEN-LAST:event_RegisterButtonMousePressed
+
+    private void PasswordFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_PasswordFieldFocusLost
+        // TODO add your handling code here:
+        String password = String.valueOf(PasswordField.getPassword());
+
+        if (password.toLowerCase().equals("Password") || password.toLowerCase().equals("")) {
+            PasswordField.setText("Password");
+            PasswordField.setEchoChar((char) 0);
+            PasswordField.setForeground(Color.decode("#CCCCCC"));
+        }
+    }//GEN-LAST:event_PasswordFieldFocusLost
+
+    private void PasswordFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_PasswordFieldFocusGained
+        // TODO add your handling code here:
+
+        String password = String.valueOf(PasswordField.getPassword());
+
+        if (password.equals("Password")) {
+            PasswordField.setText("");
+            PasswordField.setForeground(Color.black);
+            PasswordField.setEchoChar('*');
+        }
+    }//GEN-LAST:event_PasswordFieldFocusGained
+
+    private void EmailFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmailFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_EmailFieldActionPerformed
+
+    private void EmailFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_EmailFieldFocusLost
+        // TODO add your handling code here:
+        if (EmailField.getText().equals("")) {
+            EmailField.setForeground(Color.decode("#CCCCCC"));
+            EmailField.setText("ejemplo@email.com");
+        }
+    }//GEN-LAST:event_EmailFieldFocusLost
+
+    private void EmailFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_EmailFieldFocusGained
+        // TODO add your handling code here:
+        if (EmailField.getText().equals("ejemplo@email.com")) {
+            EmailField.setText("");
+            EmailField.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_EmailFieldFocusGained
+
+    private void NameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NameFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_NameFieldActionPerformed
+
+    private void NameFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_NameFieldFocusLost
+        // TODO add your handling code here:
+        if (NameField.getText().equals("")) {
+            NameField.setText("Ingresa tu nombre");
+            NameField.setForeground(Color.decode("#CCCCCC"));
+        }
+    }//GEN-LAST:event_NameFieldFocusLost
+
+    private void NameFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_NameFieldFocusGained
+        // TODO add your handling code here:
+        if (NameField.getText().equals("Ingresa tu nombre")) {
+            NameField.setText("");
+            NameField.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_NameFieldFocusGained
 
     private void SetVisibleLogin() {
         login.setVisible(true);

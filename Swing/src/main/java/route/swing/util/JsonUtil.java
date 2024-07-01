@@ -9,13 +9,13 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.IOException;
 import java.util.List;
 
-/**
- *
- * @author Luis
- */
 public class JsonUtil {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    static {
+        objectMapper.registerModule(new JavaTimeModule());
+    }
 
     public static <T> T fromJson(String json, Class<T> clazz) throws IOException {
         return objectMapper.readValue(json, clazz);
@@ -26,9 +26,6 @@ public class JsonUtil {
     }
 
     public static <T> List<T> fromJsonToList(String json, Class<T> clazz) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-
         return objectMapper.readValue(json, objectMapper.getTypeFactory().constructCollectionType(List.class, clazz));
     }
 }

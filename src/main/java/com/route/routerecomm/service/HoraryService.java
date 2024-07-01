@@ -21,4 +21,8 @@ public class HoraryService {
     public List<Horary> getoHorary(Long id) {
         return repository.findByRouteId(id);
     }
+    
+    public void save(Horary horary) {
+        repository.save(horary);
+    }
 }

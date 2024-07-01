@@ -9,6 +9,8 @@ import com.route.routerecomm.service.RouteService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -28,5 +30,10 @@ public class RouteController {
     @GetMapping("/api/routes")
     public List<Route> finAllRoutes() {
         return service.getRoutes();
+    }
+    
+    @PostMapping("/api/routes")
+    public Route save(@RequestBody Route route) {
+        return service.save(route);
     }
 }

@@ -27,7 +27,9 @@ public class OpenStreetMapService {
         String encodedAddress = URLEncoder.encode(address, "UTF-8");
         String urlString = "https://nominatim.openstreetmap.org/search?q=" + encodedAddress + "&format=json&addressdetails=1&countrycodes=PE";
         String jsonResponse = httpClient.get(urlString);
-        return parseCoordinates(jsonResponse);
+        Region region =  parseCoordinates(jsonResponse);
+        region.setName(address);
+        return region;
     }
     
     private Region parseCoordinates(String jsonResponse) {

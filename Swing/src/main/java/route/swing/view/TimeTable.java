@@ -533,12 +533,23 @@ public class TimeTable extends javax.swing.JFrame {
 
             String routesString = "";
 
-            for (Route r : routes) {
-                routesString += r.toString();
+//            int count = 0;
+//            for (Route r : routes) {
+//                routesString += r.toString();
+//                count++;
+//                if (count > 200) {
+//                    break;
+//                }
+//            }
+            
+            for (int i = 150; i < 200; i++) {
+                routesString += routes.get(i).toString();
             }
+            System.out.println(routesString);
 
             String recommendation = (llama.sendPrompt("Según esta ruta de Perú (" + InicioField.getText() + " hacia " + DestinoField.getText() + "), ¿qué ruta pública recomiendas? Por favor, devuelve solo el código de la ruta, solo el codigo nada mas. Estas son las opciones de rutas: " + routesString));
 
+            System.out.println(recommendation);
             if (recommendation.length() != 4 && !recommendation.matches("\\d+")) {
                 System.out.println("Prompt error: " + recommendation);
                 return;
@@ -578,11 +589,7 @@ public class TimeTable extends javax.swing.JFrame {
 
     private void GuardarHorarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GuardarHorarioMousePressed
         // TODO add your handling code here:
-        InicioField.setText("");
-        DestinoField.setText("");
-        datePicker1.setText("");
-        timePicker1.setText("");
-        HoraryName.setText("");
+
 
         DefaultTableModel unsetModel = (DefaultTableModel) TableTIme.getModel();
 

@@ -43,7 +43,8 @@ public class RoutePanel extends javax.swing.JPanel {
     public void init() throws IOException {
         routes = jsonUtil.fromJsonToList(client.get("/api/routes"), Route.class);
         if (routes != null) {
-            for (Route route : routes) {
+            for (int i = 0; i < 15; i++) {
+                Route route = routes.get(i);
                 JButton button = new JButton(route.getName());
                 button.addActionListener(new ButtonClickListener(route));
                 

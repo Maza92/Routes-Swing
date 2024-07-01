@@ -27,4 +27,8 @@ public class RouteService {
         return repository.findAll();
     }
     
+    public Route save(Route route) {
+        return repository.save(route);
+    }
+    
 }
