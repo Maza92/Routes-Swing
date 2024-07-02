@@ -68,7 +68,7 @@ public class MainPanel extends javax.swing.JFrame {
 
     private UserVerificationResponseDto user;
 
-    public MainPanel(UserVerificationResponseDto user) throws UnsupportedEncodingException, UnknownHostException {
+    public MainPanel(UserVerificationResponseDto user) throws UnsupportedEncodingException, UnknownHostException, IOException {
 //        setUndecorated(true);
         initComponents();
         setResizable(false);
@@ -311,10 +311,10 @@ public class MainPanel extends javax.swing.JFrame {
         jLabel11.setText("Puntos de Interés");
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 530, -1, -1));
 
-        RouteRegionInt.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        RouteRegionInt.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         RouteRegionInt.setForeground(new java.awt.Color(0, 0, 0));
         RouteRegionInt.setText("Text");
-        jPanel1.add(RouteRegionInt, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 560, 190, 110));
+        jPanel1.add(RouteRegionInt, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 560, 260, 140));
 
         jLabel12.setText("Distancia Total");
         jLabel12.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -498,6 +498,7 @@ public class MainPanel extends javax.swing.JFrame {
                         + route.toString()).replaceAll("^\"|\"$", "")
                 + "</html>"
         );
+        RouteRegionInt.setText("<html>" + HttpClientLlamaApi.sendPrompt("Simula los puntos de interes que hay en esta ruta (" + route.toString() + "), simulalo de manera general, y retornalo en un muy pequeño parrado, de una linea maximo, solo retorna eso y nada mas, la ruta es de Perú") + "</html>");
     }
 
     private Route toRoute(HistoryRoute routeH) {
@@ -611,43 +612,7 @@ public class MainPanel extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new MainPanel(new UserVerificationResponseDto()).setVisible(true);
-                } catch (UnsupportedEncodingException ex) {
-                    Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (UnknownHostException ex) {
-                    Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
+ 
 
     public void setForm(JComponent com) {
         MenuPanel.removeAll();

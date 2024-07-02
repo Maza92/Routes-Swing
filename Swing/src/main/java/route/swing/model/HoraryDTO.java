@@ -17,11 +17,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Horary {
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+public class HoraryDTO {
     private int id;
     private String dia;
     private LocalTime horaInicio;
     private LocalTime horaFin;
-    private Route route;
+    private RouteDTO2 route;
 }

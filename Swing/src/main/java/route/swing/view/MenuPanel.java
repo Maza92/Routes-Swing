@@ -20,12 +20,17 @@ public class MenuPanel extends javax.swing.JPanel {
      * Creates new form MenuPanel
      */
     UserVerificationResponseDto user;
-    public MenuPanel(UserVerificationResponseDto user) {
+    History history;
+    public MenuPanel(UserVerificationResponseDto user) throws IOException {
         initComponents();
         this.user = user;
         UserNameLabel.setText(user.getName());
+        history = new History(this.user);
     }
 
+    public void setMain(MainPanel main) {
+        history.setMain(main);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -196,13 +201,9 @@ public class MenuPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_HorarButtonMouseExited
 
     private void HistoryButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HistoryButtonMousePressed
-        try {
-            // TODO add your handling code here:
-            History history = new History(user);
-            history.setVisible(true);
-        } catch (IOException ex) {
-            Logger.getLogger(MenuPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        // TODO add your handling code here:
+//        history.setMain(main);
+        history.setVisible(true);
     }//GEN-LAST:event_HistoryButtonMousePressed
 
     private void HorarButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HorarButtonMousePressed

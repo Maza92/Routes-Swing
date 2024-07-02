@@ -9,6 +9,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +23,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import route.swing.http.HttpClient;
+import route.swing.model.HistoryRegion;
 import route.swing.model.HistoryRoute;
+import route.swing.model.Route;
+import route.swing.model.jxmap.Region;
 import route.swing.model.user.UserVerificationResponseDto;
 import route.swing.util.JsonUtil;
 
@@ -43,6 +47,8 @@ public class History extends javax.swing.JFrame {
 
     HttpClient client;
     JsonUtil jsonUtil;
+    MainPanel main;
+    ArrayList<Long> index = new  ArrayList<>();
 
     public History(UserVerificationResponseDto user) throws IOException {
         setUndecorated(true);
@@ -62,6 +68,7 @@ public class History extends javax.swing.JFrame {
             }
             Object[] row = {route.getName(), route.getStart().getName(), route.getEnd().getName()};
 
+            index.add(route.getId());
             model.addRow(row);
         }
 
@@ -100,6 +107,9 @@ public class History extends javax.swing.JFrame {
     private DefaultTableModel tableModel;
     private TableRowSorter<DefaultTableModel> rowSorter;
 
+    public void setMain(MainPanel main) {
+        this.main = main;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -114,9 +124,7 @@ public class History extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         Table = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        datePicker1 = new com.github.lgooddatepicker.components.DatePicker();
         jPanel4 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -132,11 +140,10 @@ public class History extends javax.swing.JFrame {
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        InicioField.setBackground(new java.awt.Color(255, 255, 255));
         InicioField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        InicioField.setForeground(new java.awt.Color(204, 204, 204));
-        InicioField.setText("Ingrese nombre");
+        InicioField.setBackground(new java.awt.Color(255, 255, 255));
         InicioField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+        InicioField.setForeground(new java.awt.Color(204, 204, 204));
         InicioField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 InicioFieldFocusGained(evt);
@@ -145,7 +152,7 @@ public class History extends javax.swing.JFrame {
                 InicioFieldFocusLost(evt);
             }
         });
-        jPanel1.add(InicioField, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 190, 260, 50));
+        jPanel1.add(InicioField, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 240, 260, 50));
 
         Table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -162,45 +169,45 @@ public class History extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 330, 441));
 
-        jLabel2.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("Detalle de ruta");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 110, 270, 50));
+        jLabel2.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 160, 270, 50));
 
-        jLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel4.setText("Fecha");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 260, -1, -1));
-
+        jLabel5.setText("Nombre");
         jLabel5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel5.setText("Nombre");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 170, -1, -1));
-
-        datePicker1.setBackground(new java.awt.Color(255, 255, 255));
-        datePicker1.setOpaque(false);
-        jPanel1.add(datePicker1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 280, 260, 50));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 220, -1, -1));
 
         jPanel4.setBackground(new java.awt.Color(85, 110, 230));
 
-        jLabel6.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Buscar");
+        jLabel6.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel6MousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 350, 260, 50));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 310, 260, 50));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 670, 480));
 
@@ -243,18 +250,18 @@ public class History extends javax.swing.JFrame {
 
     private void InicioFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_InicioFieldFocusGained
         // TODO add your handling code here:
-        if (InicioField.getText().equals("Ingrese nombre")) {
-            InicioField.setText("");
-            InicioField.setForeground(Color.black);
-        }
+//        if (InicioField.getText().equals("Ingrese nombre")) {
+//            InicioField.setText("");
+//            InicioField.setForeground(Color.black);
+//        }
     }//GEN-LAST:event_InicioFieldFocusGained
 
     private void InicioFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_InicioFieldFocusLost
         // TODO add your handling code here:
-        if (InicioField.getText().equals("")) {
-            InicioField.setText("Ingrese nombre");
-            InicioField.setForeground(Color.decode("#CCCCCC"));
-        }
+//        if (InicioField.getText().equals("")) {
+//            InicioField.setText("Ingrese nombre");
+//            InicioField.setForeground(Color.decode("#CCCCCC"));
+//        }
     }//GEN-LAST:event_InicioFieldFocusLost
 
     private void returnLAbelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_returnLAbelMouseEntered
@@ -272,6 +279,46 @@ public class History extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_returnLAbelMousePressed
 
+    private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
+        // TODO add your handling code here:
+        int indice = Table.getSelectedRow();
+        
+        Long inde = index.get(indice);
+        HistoryRoute routeNow = null;
+        for (HistoryRoute route : userRoutes) {
+            if (route.getId() == inde) {
+                routeNow = route;
+                break;
+            }
+        }
+        if (routeNow != null) {
+            main.graphicRouteInPanel(toRoute(routeNow));
+            try {
+                main.dataSet(toRoute(routeNow));
+            } catch (IOException ex) {
+                Logger.getLogger(History.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            this.dispose();
+        }
+        
+    }//GEN-LAST:event_jLabel6MousePressed
+
+    private Route toRoute(HistoryRoute route) {
+        Route routed = new Route();
+        routed.setId(route.getId());
+        routed.setName(route.getName());
+        routed.setStart(toRegion(route.getStart()));
+        routed.setEnd(toRegion(route.getEnd()));
+        return routed;
+    }
+    private Region toRegion(HistoryRegion region) {
+        Region regiond = new Region();
+        regiond.setId(region.getId());
+        regiond.setName(region.getName());
+        regiond.setLatitud(region.getLatitud());
+        regiond.setLongitud(region.getLongitud());
+        return regiond;
+    }
     private void customTable() {
         // Eliminar bordes del encabezado y las celdas
         Table.setShowGrid(false);
@@ -326,49 +373,13 @@ public class History extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(History.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(History.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(History.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(History.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new History(new UserVerificationResponseDto()).setVisible(true);
-                } catch (IOException ex) {
-                    Logger.getLogger(History.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField InicioField;
     private javax.swing.JTable Table;
-    private com.github.lgooddatepicker.components.DatePicker datePicker1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;

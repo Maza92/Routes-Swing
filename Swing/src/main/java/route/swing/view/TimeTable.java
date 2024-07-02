@@ -13,6 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -35,13 +36,17 @@ import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.WaypointPainter;
 import route.swing.http.HttpClient;
 import route.swing.http.HttpClientLlamaApi;
+import route.swing.model.HistoryRegion;
 import route.swing.model.Horary;
+import route.swing.model.HoraryDTO;
 import route.swing.model.Route;
+import route.swing.model.RouteDTO2;
 import route.swing.model.jxmap.Region;
 import route.swing.model.jxmap.RoutingData;
 import route.swing.service.Haversine;
 import route.swing.service.OpenStreetMapService;
 import route.swing.service.RoutingService;
+import route.swing.service.Suggestions2;
 import route.swing.service.WheatherService;
 import route.swing.util.JsonUtil;
 
@@ -69,13 +74,13 @@ public class TimeTable extends javax.swing.JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         customTable();
-        
+
         InicioField.setBorder(BorderFactory.createCompoundBorder(InicioField.getBorder(),
                 BorderFactory.createEmptyBorder(5, 15, 5, 5)));
 
         DestinoField.setBorder(BorderFactory.createCompoundBorder(DestinoField.getBorder(),
                 BorderFactory.createEmptyBorder(5, 15, 5, 5)));
-        
+
         HoraryName.setBorder(BorderFactory.createCompoundBorder(DestinoField.getBorder(),
                 BorderFactory.createEmptyBorder(5, 15, 5, 5)));
 
@@ -214,6 +219,7 @@ public class TimeTable extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         paradas = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
+        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -277,6 +283,11 @@ public class TimeTable extends javax.swing.JFrame {
                 InicioFieldFocusLost(evt);
             }
         });
+        InicioField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                InicioFieldMousePressed(evt);
+            }
+        });
         jPanel1.add(InicioField, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 180, 50));
 
         DestinoField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -290,6 +301,11 @@ public class TimeTable extends javax.swing.JFrame {
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 DestinoFieldFocusLost(evt);
+            }
+        });
+        DestinoField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                DestinoFieldMousePressed(evt);
             }
         });
         jPanel1.add(DestinoField, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 180, 50));
@@ -419,7 +435,7 @@ public class TimeTable extends javax.swing.JFrame {
         RouteTimeLabel.setForeground(new java.awt.Color(0, 0, 0));
         jPanel1.add(RouteTimeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 530, 130, 20));
 
-        jLabel9.setText("Transporte");
+        jLabel9.setText("Ruta");
         jLabel9.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 580, -1, -1));
@@ -453,6 +469,11 @@ public class TimeTable extends javax.swing.JFrame {
         );
 
         jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 630, 30, 30));
+
+        jTextField1.setBackground(new java.awt.Color(255, 255, 255));
+        jTextField1.setForeground(new java.awt.Color(255, 255, 255));
+        jTextField1.setText("jTextField1");
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 80, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -520,16 +541,16 @@ public class TimeTable extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_HoraryNameFocusLost
 
+    Route routeHistorySave;
     private void jLabel5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MousePressed
 
         try {
-            Region start = mapApi.getCoordinatesByAddress(InicioField.getText());
-            Region end = mapApi.getCoordinatesByAddress(DestinoField.getText());
+            Region start = toRegion(this.startResponse);
+            Region end = toRegion(endResponse);
 
             Route route = new Route(start, end);
 
             graphicRouteInPanel(route);
-            dataSet(route);
 
             String routesString = "";
 
@@ -541,7 +562,6 @@ public class TimeTable extends javax.swing.JFrame {
 //                    break;
 //                }
 //            }
-            
             for (int i = 150; i < 200; i++) {
                 routesString += routes.get(i).toString();
             }
@@ -559,6 +579,7 @@ public class TimeTable extends javax.swing.JFrame {
             for (Route r : routes) {
                 if (recommendation.equals(r.getName())) {
                     idRecom = r.getId();
+                    routeHistorySave = r;
                 }
             }
 
@@ -571,13 +592,17 @@ public class TimeTable extends javax.swing.JFrame {
             }
 
             for (Horary horary : horaries) {
+
                 Object[] row = {horary.getDia(), horary.getHoraInicio(), horary.getHoraFin()};
                 model.addRow(row);
+                if (horary.getDia().toLowerCase().equals("sabado")) {
+                    break;
+                }
+
             }
 
             TableTIme.setModel(model);
-            transporte.setText("C");
-            paradas.setText("142 aprox");
+            dataSet(route);
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(TimeTable.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -587,20 +612,85 @@ public class TimeTable extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jLabel5MousePressed
 
+    private Region toRegion(HistoryRegion regionh) {
+        Region region = new Region();
+        region.setId(regionh.getId());
+        region.setName(regionh.getName());
+        region.setLatitud(regionh.getLatitud());
+        region.setLongitud(regionh.getLongitud());
+        return region;
+    }
     private void GuardarHorarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GuardarHorarioMousePressed
         // TODO add your handling code here:
 
+        HoraryDTO save = new HoraryDTO();
+        save.setDia(HoraryName.getText());
+        save.setHoraInicio(timePicker1.getTime());
+        save.setHoraFin(timePicker1.getTime());
+        save.setRoute(new RouteDTO2(routeHistorySave.getId(), routeHistorySave.getName(), routeHistorySave.getStart(), routeHistorySave.getEnd()));
 
+        try {
+            System.out.println(jsonUtil.toJson(save));
+            String respose = client.post("/api/horary/routes", jsonUtil.toJson(save));
+        } catch (IOException ex) {
+            Logger.getLogger(TimeTable.class.getName()).log(Level.SEVERE, null, ex);
+        }
         DefaultTableModel unsetModel = (DefaultTableModel) TableTIme.getModel();
 
         unsetModel.setRowCount(0);
         TableTIme.setModel(unsetModel);
+        InicioField.setText("");
+        DestinoField.setText("");
+        datePicker1.setText("");
+        timePicker1.setText("");
+        HoraryName.setText("");
     }//GEN-LAST:event_GuardarHorarioMousePressed
 
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jLabel1MousePressed
+
+    private void InicioFieldMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_InicioFieldMousePressed
+        // TODO add your handling code here:
+        if (InicioField.getText().equals("Inicio")) {
+            Suggestions2 suggestions = new Suggestions2(this);
+            suggestions.setStatus(false);
+            suggestions.setVisible(true);
+
+        }
+    }//GEN-LAST:event_InicioFieldMousePressed
+
+    private void DestinoFieldMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DestinoFieldMousePressed
+        // TODO add your handling code here:
+        if (DestinoField.getText().equals("Destino")) {
+            Suggestions2 suggestions = new Suggestions2(this);
+            suggestions.setStatus(true);
+            suggestions.setVisible(true);
+        }
+    }//GEN-LAST:event_DestinoFieldMousePressed
+
+    HistoryRegion startResponse;
+    HistoryRegion endResponse;
+
+    public void SaveStartRegion(String name, String oms_id, String oms_type) throws IOException {
+        this.startResponse = jsonUtil.fromJson(client.post("/api/user/region", jsonUtil.toJson(mapApi.getCoordinatesByOsmId(name, oms_id, oms_type))), HistoryRegion.class);
+
+        if (this.startResponse != null) {
+            InicioField.setForeground(Color.black);
+            InicioField.setText(name);
+        } else {
+            System.out.println("error");
+        }
+    }
+
+    public void SaveEndRegion(String name, String oms_id, String oms_type) throws IOException {
+        this.endResponse = jsonUtil.fromJson(client.post("/api/user/region", jsonUtil.toJson(mapApi.getCoordinatesByOsmId(name, oms_id, oms_type))), HistoryRegion.class);
+        if (this.endResponse != null) {
+            DestinoField.setForeground(Color.black);
+            DestinoField.setText(name);
+        }
+    }
 
     public void dataSet(Route route) throws IOException {
         double distance = Haversine.round(Haversine.calculateDistance(
@@ -619,6 +709,12 @@ public class TimeTable extends javax.swing.JFrame {
 
         RouteWheaterLabel.setText(String.valueOf(new WheatherService().getActualTemp()) + " °");
 
+        transporte.setText(routeHistorySave.getName());
+
+        Random random = new Random();
+        int randomNumber = random.nextInt((120 - 40) + 1) + 40;
+        
+        paradas.setText(randomNumber + " aprox");
 //        RouteDetalleRoute.setText(
 //                "<html>"
 //                + HttpClientLlamaApi.sendPrompt("Simula una descripcion generica muy corta sobre esta ruta de Perú sobre su dificultad teniendo en cuenta el trafico general de Perú y si se puede llegar a tener un incoveniente o algo por el estilo, la ruta que te doy se compone de un codigo (no hace falta que menciones el codigo ni los lugares), un lugar de inicio y un lugar de fin, dame solo la descripcion, esta es la ruta: "
@@ -681,41 +777,7 @@ public class TimeTable extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TimeTable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TimeTable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TimeTable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TimeTable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new TimeTable().setVisible(true);
-                } catch (IOException ex) {
-                    Logger.getLogger(TimeTable.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField DestinoField;
@@ -743,6 +805,7 @@ public class TimeTable extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
     private route.swing.model.jxmap.JXMapViewerCustom jXMapViewer;
     private javax.swing.JLabel paradas;
     private com.github.lgooddatepicker.components.TimePicker timePicker1;

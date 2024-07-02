@@ -154,8 +154,14 @@ public class RoutePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MousePressed
-        // TODO add your handling code here:
-        Main.setForm(new MenuPanel(Main.getUser()));
+        try {
+            // TODO add your handling code here:
+            MenuPanel menu = new MenuPanel(Main.getUser());
+            menu.setMain(Main);
+            Main.setForm(menu);
+        } catch (IOException ex) {
+            Logger.getLogger(RoutePanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jLabel5MousePressed
 
 
