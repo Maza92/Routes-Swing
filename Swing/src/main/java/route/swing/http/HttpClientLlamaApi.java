@@ -19,7 +19,7 @@ import org.json.JSONObject;
  */
 public class HttpClientLlamaApi {
 
-    private static final String API_KEY = "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";
+    private static final String API_KEY = "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";
     private static final String MODEL_ID = "llama3-70b-8192";
     private static final String API_URL = "https://api.groq.com/openai/v1/chat/completions";
     private static final OkHttpClient client = new OkHttpClient();
